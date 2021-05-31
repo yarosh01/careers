@@ -20,6 +20,8 @@ requires = [
     'SQLAlchemy',
     'transaction',
     'zope.sqlalchemy',
+    'paginate_sqlalchemy',
+    'webhelpers2'
 ]
 
 tests_require = [

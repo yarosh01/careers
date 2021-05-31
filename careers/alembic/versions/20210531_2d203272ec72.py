@@ -1,8 +1,8 @@
 """init
 
-Revision ID: 3c0f71055392
-Revises: 5360a59838c9
-Create Date: 2021-05-28 15:23:26.754042
+Revision ID: 2d203272ec72
+Revises: 
+Create Date: 2021-05-31 12:13:03.499082
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '3c0f71055392'
-down_revision = '5360a59838c9'
+revision = '2d203272ec72'
+down_revision = None
 branch_labels = None
 depends_on = None
 
@@ -25,6 +25,13 @@ def upgrade():
     sa.PrimaryKeyConstraint('id', name=op.f('pk_admin_user'))
     )
     op.create_index('admin_index', 'admin_user', ['login'], unique=True, mysql_length=255)
+    op.create_table('models',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('name', sa.Text(), nullable=True),
+    sa.Column('value', sa.Integer(), nullable=True),
+    sa.PrimaryKeyConstraint('id', name=op.f('pk_models'))
+    )
+    op.create_index('my_index', 'models', ['name'], unique=True, mysql_length=255)
     op.create_table('resume',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('first_name', sa.Text(), nullable=True),
@@ -40,8 +47,12 @@ def upgrade():
     sa.Column('title', sa.Text(), nullable=True),
     sa.Column('responsibilities', sa.Text(), nullable=True),
     sa.Column('skills', sa.Text(), nullable=True),
-    sa.Column('name', sa.Text(), nullable=True),
-    sa.Column('value', sa.Integer(), nullable=True),
+    sa.Column('created', sa.DateTime(), nullable=True),
+    sa.Column('location', sa.Text(), nullable=True),
+    sa.Column('position', sa.Text(), nullable=True),
+    sa.Column('time_work', sa.Text(), nullable=True),
+    sa.Column('work_need', sa.Text(), nullable=True),
+    sa.Column('benefits', sa.Text(), nullable=True),
     sa.PrimaryKeyConstraint('id', name=op.f('pk_vacancy'))
     )
     op.create_index('vacancy_index', 'vacancy', ['title'], unique=True, mysql_length=255)
@@ -53,6 +64,8 @@ def downgrade():
     op.drop_table('vacancy')
     op.drop_index('resume_index', table_name='resume', mysql_length=255)
     op.drop_table('resume')
+    op.drop_index('my_index', table_name='models', mysql_length=255)
+    op.drop_table('models')
     op.drop_index('admin_index', table_name='admin_user', mysql_length=255)
     op.drop_table('admin_user')
     # ### end Alembic commands ###

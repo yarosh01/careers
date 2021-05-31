@@ -5,7 +5,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from ..models.adminuser import AdminUser
 
 
-@view_config(route_name='home', renderer='careers:templates/mytemplate.mako')
+@view_config(route_name='home', renderer='careers:templates/index.mako')
 def my_view(request):
     try:
         query = request.dbsession.query(AdminUser)
