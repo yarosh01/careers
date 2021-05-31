@@ -9,7 +9,9 @@ import datetime
 from webhelpers2.text import urlify
 from webhelpers2.date import distance_of_time_in_words
 from .meta import Base
-import re
+import enum
+
+from sqlalchemy.types import Enum
 
 
 class LocationEnum:
@@ -35,6 +37,7 @@ class BenefitsEnum:
     benefits = 'Benefits'
 
 
+
 class Vacancy(Base):
     __tablename__ = 'vacancy'
     id = Column(Integer, primary_key=True)
@@ -52,9 +55,10 @@ class Vacancy(Base):
     def slug(self):
         return urlify(self.title)
 
+
     @property
     def created_in_words(self):
         return distance_of_time_in_words(self.created, datetime.datetime.utcnow())
-    
+
 
 Index('vacancy_index', Vacancy.title, unique=True, mysql_length=255)
